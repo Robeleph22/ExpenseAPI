@@ -23,7 +23,7 @@ namespace ExpensemanagmentAPi.Controllers
 
             var a = _context.Categories.Where(c => c.Type == "Expense"&& c.UserId==User.UserId()).SelectMany(c => c.Transactions).Sum(x => x.Amount);
             var b = _context.Categories.Where(c => c.Type == "Income" && c.UserId==User.UserId()).SelectMany(c => c.Transactions).Sum(x => x.Amount);
-            var ff = _context.Categories.Join(_context.Transactions,
+            var ff = _context.Categories.Where(c=>c.UserId == User.UserId()).Join(_context.Transactions,
                 p => p.CategoryId,
                 c => c.CategoryId, ((category, transaction) => new
                 {
@@ -35,7 +35,7 @@ namespace ExpensemanagmentAPi.Controllers
                 })
             ).ToList();
 
-            var c = _context.Transactions.GroupBy(vg => vg.CategoryId).
+            var c = _context.Transactions.Where(c=>c.Category.UserId == User.UserId()).GroupBy(vg => vg.CategoryId).
                 Select(vg => new
                 {
                     //vg.Key,
