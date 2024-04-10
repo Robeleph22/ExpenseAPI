@@ -12,9 +12,9 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-var port = builder.Configuration["PORT"];
+/*var port = builder.Configuration["PORT"];
 Debug.Print($"port: {port}");
-builder.WebHost.UseUrls($"http://0.0.0.0:{port};http://localhost:3000");
+builder.WebHost.UseUrls($"http://0.0.0.0:{port};http://localhost:3000");*/
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -43,10 +43,6 @@ builder.Services.AddCors(options =>
                           policy.AllowAnyMethod();
                       });
 });
-
-
-
-
 
 // Add services to the container.
 
@@ -90,15 +86,15 @@ builder.Services.AddAuthorization(options =>
 
 
 //Dependencey Injection to mysql for local
-//var url = builder.Configuration.GetConnectionString("mysqlConnection");
+var url = builder.Configuration.GetConnectionString("mysqlConnection");
 
 //for production
-var mysqlHost = builder.Configuration["MYSQLHOST"];
-var mysqlPort = builder.Configuration["MYSQLPORT"];
-var mysqlUser = builder.Configuration["MYSQLUSER"];
-var mysqlPassword = builder.Configuration["MYSQLPASSWORD"];
-var mysqlDatabase = builder.Configuration["MYSQLDATABASE"];
-var url = $"Server={mysqlHost};Database={mysqlDatabase};Port={mysqlPort};user={mysqlUser};password={mysqlPassword}";
+// var mysqlHost = builder.Configuration["MYSQLHOST"];
+// var mysqlPort = builder.Configuration["MYSQLPORT"];
+// var mysqlUser = builder.Configuration["MYSQLUSER"];
+// var mysqlPassword = builder.Configuration["MYSQLPASSWORD"];
+// var mysqlDatabase = builder.Configuration["MYSQLDATABASE"];
+// var url = $"Server={mysqlHost};Database={mysqlDatabase};Port={mysqlPort};user={mysqlUser};password={mysqlPassword}";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(url, ServerVersion.AutoDetect(url)));
 
